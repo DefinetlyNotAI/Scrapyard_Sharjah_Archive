@@ -2131,8 +2131,8 @@ def weblogin():
 
             conn = get_db_connection()
             cursor = conn.cursor()
-            query = f"SELECT * FROM users WHERE username='{username}' AND password='{password}'"
-            cursor.execute(query)
+            query = "SELECT * FROM users WHERE username=%s AND password=%s"
+            cursor.execute(query, (username, password))
             user = cursor.fetchone()
             cursor.close()
             conn.close()

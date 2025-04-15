@@ -7,6 +7,10 @@ Includes a Hunt The Flag (HTF) platform designed for cybersecurity enthusiasts t
 solve challenges across various domains such as cryptography, web exploitation, 
 reverse engineering, forensics, and steganography.
 
+> [!NOTE]
+> This is the fully fledged but NOT TESTED OR DEPLOYED codebase for the Scrapyard Sharjah Website, this has been merged from [Scrapyard Bounty](https://github.com/DefinetlyNotAI/Scrapyard_Bounty) and [Scrapyard Bank](https://github.com/DefinetlyNotAI/Scrapyard_Bank), where Scrapyard Bounty was the main website, and the basis of this merge, and Scrapyard Bank was the whole banking system of Scraps the digital currency, do note both these repo's work together by using 1 database!!
+
+
 ## Features
 
 - User authentication and session management.

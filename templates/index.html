@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balance Checker | Scrapyard Bounty</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="balance-container">
+    <div class="balance-card">
+        <div class="card-header mb-4">
+            <h1 class="card-title">
+                <i class="fas fa-coins text-primary"></i> Scrapyard Bounty
+            </h1>
+        </div>
+
+        <div class="welcome-animation mb-4">
+            <div class="coin-animation">
+                <i class="fas fa-coins"></i>
+            </div>
+            <p class="welcome-text">Welcome to Scrapyard Bounty</p>
+        </div>
+
+        <p class="mb-4">To check your balance, please enter your UUID below.</p>
+
+        <div class="form-group">
+            <div class="d-flex gap-2">
+                <label for="uuid-input"></label><input type="text" id="uuid-input" class="form-control"
+                                                       placeholder="Enter your UUID">
+                <button onclick="checkBalance()" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Check
+                </button>
+            </div>
+            <div id="error-message" class="text-danger mt-2"></div>
+        </div>
+
+        <div class="mt-5 text-muted">
+            <p class="mb-2">
+                <i class="fas fa-info-circle"></i> You can directly visit with your UUID in the URL:
+            </p>
+            <code>?uuid=YOUR_UUID</code>
+        </div>
+
+        <div class="mt-4 d-flex gap-2">
+            <a href="/bank/login" class="btn btn-primary">
+                <i class="fas fa-lock"></i> Admin Login
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="notification" class="notification">
+    <i class="fas fa-check-circle"></i> <span id="notification-message"></span>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script>
+    // Check balance function
+    function checkBalance() {
+        const uuid = document.getElementById("uuid-input").value.trim();
+        if (uuid) {
+            try {
+                // Basic UUID validation
+                if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(uuid)) {
+                    throw new Error("Invalid UUID format");
+                }
+
+                // Navigate to balance page
+                window.location.href = `/?uuid=${uuid}`;
+            } catch (error) {
+                document.getElementById("error-message").innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + error.message;
+                // Add shake animation to the input
+                const input = document.getElementById("uuid-input");
+                input.classList.add("shake");
+                setTimeout(() => input.classList.remove("shake"), 500);
+            }
+        } else {
+            document.getElementById("error-message").innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter a valid UUID.';
+            // Add shake animation to the input
+            const input = document.getElementById("uuid-input");
+            input.classList.add("shake");
+            setTimeout(() => input.classList.remove("shake"), 500);
+        }
+    }
+
+    // Show notification
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+
+        notificationMessage.textContent = message;
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    // Allow pressing Enter to submit
+    document.getElementById("uuid-input").addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            checkBalance();
+        }
+    });
+
+    // Initialize on page load
+    window.onload = function () {
+        // Check if UUID is in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const uuid = urlParams.get('uuid');
+
+        if (uuid) {
+            document.getElementById('uuid-input').value = uuid;
+        }
+    };
+</script>
+</body>
+</html>
+

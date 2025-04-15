@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <title>Add Item</title>
+    <link href="{{ url_for('static', filename='favicon.png') }}" rel="icon" type="image/png">
+    <link href="{{ url_for('static', filename='css/add_item.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_body.css') }}" rel="stylesheet">
+</head>
+<body>
+<h1>Add a New Item</h1>
+<form method="POST">
+    <label>
+        Name:
+        <input name="name" required type="text">
+    </label>
+    <br>
+    <label>
+        Price:
+        <input name="price" required step="0.01" type="number">
+    </label>
+    <br>
+    <label>
+        Image URL:
+        <input name="image" required type="text">
+    </label>
+    <br>
+    <label>
+        Description:
+        <textarea name="description"></textarea>
+    </label>
+    <br>
+    <label>
+        Stock:
+        <input name="stock" required type="number">
+    </label>
+    <br>
+    <button type="submit">Add Item</button>
+</form>
+<a href="{{ url_for('shop') }}">Back to Store</a>
+</body>
+</html>

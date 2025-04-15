@@ -1,0 +1,36 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Leaderboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <link href="{{ url_for('static', filename='css/leaderboard.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/competition+leaderboard.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Leaderboard</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Team Name</th>
+            <th>Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for team in teams %}
+        <tr>
+            <td>{{ team[0] }}</td>
+            <td>{{ team[1] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button class="back-button" onclick="window.location.href='/'">Back to Home</button>
+</div>
+<script src="{{ url_for('static', filename='js/leaderboard.js') }}"></script>
+</body>
+</html>

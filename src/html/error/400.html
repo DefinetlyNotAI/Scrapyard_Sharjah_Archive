@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>400 Bad Request</title>
+    <link href="{{ url_for('static', filename='css/error.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_buttongroup-a.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>400 - Bad Request</h1>
+    <div class="terminal">
+        <div class="terminal-header">$ BAD REQUEST</div>
+        {% if error_message %}
+        <p><strong>Error Message:</strong> {{ error_message }}</p>
+        {% endif %}
+        <p><strong>Basic Analysis:</strong> The request could not be understood by the server due to malformed syntax.
+        </p>
+        <p><strong>Suggestion:</strong> Verify the request syntax and try again.</p>
+    </div>
+    <div class="button-group challenges">
+        <a href="/static">Return to Home</a>
+    </div>
+    <div class="hint">
+        <p>Access is restricted based on your user role.<br>
+            Please ensure your account has the correct permissions.</p>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/error.js') }}"></script>
+</body>
+</html>

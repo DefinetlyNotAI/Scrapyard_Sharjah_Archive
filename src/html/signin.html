@@ -1,0 +1,37 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Sign In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Sign In</h1>
+    <form id="signin-form" method="post">
+        <div class="input-group">
+            <input id="team_name" name="team_name" placeholder=" " required type="text">
+            <label for="team_name">Team Name</label>
+        </div>
+        <div class="input-group">
+            <input id="password" name="password" placeholder=" " required type="password">
+            <label for="password">Password</label>
+        </div>
+        <button type="submit">
+            Sign In
+            <br>
+        </button>
+        {% if error %}
+        <div class="error visible" id="error-message">{{ error }}</div>
+        {% else %}
+        <div class="error" id="default-error-message">Please enter your team name and password.</div>
+        {% endif %}
+    </form>
+</div>
+<script src="{{ url_for('static', filename='js/signin.js') }}"></script>
+</body>
+</html>

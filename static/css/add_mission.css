@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Galindo&display=swap');
+@import url('https://p.typekit.net/p.css?s=1&k=ohf0gmr&ht=tk&f=28207.28241.49976&a=62569417&app=typekit&e=css');
+
+@font-face {
+    font-family: 'p22-stanyan';
+    src: url('https://use.typekit.net/af/444506/00000000000000007735b3cd/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('woff2'),
+    url('https://use.typekit.net/af/444506/00000000000000007735b3cd/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('woff'),
+    url('https://use.typekit.net/af/444506/00000000000000007735b3cd/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('opentype');
+    font-display: auto;
+    font-style: normal;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'moonblossom';
+    src: url('https://use.typekit.net/af/bf03be/00000000000000007735fbe5/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3') format('woff2'),
+    url('https://use.typekit.net/af/bf03be/00000000000000007735fbe5/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3') format('woff'),
+    url('https://use.typekit.net/af/bf03be/00000000000000007735fbe5/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3') format('opentype');
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+}
+
+
+body {
+    position: relative;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin-bottom: 1rem;
+    color: black;
+    font-family: 'moonblossom', sans-serif;
+}
+
+.form-container {
+    width: 90%;
+    max-width: 400px;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px); /* Adds a blur effect to the background */
+}
+
+label {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: #333;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    transition: border 0.3s;
+    background-color: #f9f9f9; /* Light background for inputs */
+}
+
+input:focus {
+    border-color: #aaa;
+    outline: none;
+    background-color: #fff; /* Slightly brighter when focused */
+}
+
+button {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 3rem;
+    }
+
+    .form-container {
+        width: 90%; /* Full width on mobile */
+        padding: 15px;
+    }
+}

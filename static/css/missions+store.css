@@ -1,0 +1,27 @@
+.mission::before, .item::before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    background-image: url('https://github.com/hackclub/scrapyard/blob/main/public/elements/thumbtack.png?raw=true');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.item, .mission {
+    background-image: url('https://github.com/hackclub/scrapyard/blob/main/public/elements/sticky-note.svg?raw=true');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 60px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    box-shadow: none;
+    border: none;
+}

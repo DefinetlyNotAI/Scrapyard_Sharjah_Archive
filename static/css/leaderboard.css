@@ -1,0 +1,26 @@
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --background: #0f172a;
+    --text: #f8fafc;
+    --card: #1e293b;
+    --row-hover: #2a3a53;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+    margin-bottom: 2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 2rem;
+    background: var(--card);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border);
+}

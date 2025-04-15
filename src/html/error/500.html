@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>500 - Server Meltdown</title>
+    <link href="{{ url_for('static', filename='css/500.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_buttongroup-a.css') }}" rel="stylesheet">
+    <!-- Include SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Include SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div class="container">
+    <div class="server">
+        <div class="server-lights">
+            <div class="light"></div>
+            <div class="light"></div>
+            <div class="light"></div>
+        </div>
+        <div class="fire-container">
+            <div class="fire"></div>
+            <div class="fire"></div>
+            <div class="fire"></div>
+        </div>
+    </div>
+    <h1><span class="glitch">500</span></h1>
+    <p class="error-text">Server Meltdown Detected</p>
+    <div class="error-details">
+        {% if error_message %}
+        <p><strong>Crash Location:</strong> {{ error_message }}</p>
+        {% endif %}
+        <span>Error: INTERNAL_SERVER_ERROR</span><br>
+        <span>Status: 500</span><br>
+        <span>Stack: MAXIMUM_CALL_STACK_SIZE_EXCEEDED_SO_DONATE_TO_HACK_CLUB</span>
+    </div>
+    <p class="description">Our servers are having a meltdown! We've dispatched our emergency response team.</p>
+    <p class="description">Its not you... its us!</p>
+    <button class="retry-btn" onclick="retryConnection()">Retry Connection</button>
+    <div class="error-code"></div>
+</div>
+<script src="{{ url_for('static', filename='js/500.js') }}"></script>
+</body>
+</html>

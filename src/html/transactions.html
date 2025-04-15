@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Transactions</title>
+    <link href="{{ url_for('static', filename='css/transactions.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>HCB Transactions</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Amount (Dollars)</th>
+            <th>Memo</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Pending</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction.id }}</td>
+            <td>{{ transaction.amount_dollars }}</td>
+            <td>{{ transaction.memo }}</td>
+            <td>{{ transaction.date }}</td>
+            <td>{{ transaction.type }}</td>
+            <td>{{ transaction.pending }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button class="back-button" onclick="window.location.href='/'">Back to Home</button>
+</div>
+</body>
+</html>

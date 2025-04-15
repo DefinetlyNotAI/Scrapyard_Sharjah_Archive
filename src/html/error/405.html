@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>405 Method Not Allowed</title>
+    <link href="{{ url_for('static', filename='css/error.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_buttongroup-a.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>405 - Method Not Allowed</h1>
+    <div class="terminal">
+        <div class="terminal-header">$ NAVIGATION SYSTEM</div>
+        {% if error_message %}
+        <p><strong>Error Message:</strong> {{ error_message }}</p>
+        {% endif %}
+        <p><strong>Basic Analysis:</strong> The HTTP method used is not supported by the server for the requested URL
+        </p>
+        <p><strong>Suggestion:</strong> Check the allowed methods for the URL or return to the homepage</p>
+    </div>
+    <div class="button-group challenges">
+        <a href="/static">Return to Home</a>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/error.js') }}"></script>
+</body>
+</html>

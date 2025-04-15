@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <title>Modify Stock</title>
+    <link href="{{ url_for('static', filename='favicon.png') }}" rel="icon" type="image/png">
+    <link href="{{ url_for('static', filename='css/modify_stock.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_body.css') }}" rel="stylesheet">
+</head>
+<body>
+<h1>Modify Stock</h1>
+<form action="{{ url_for('update_stock') }}" method="POST">
+    <table>
+        <tr>
+            <th>Item Name</th>
+            <th>Current Stock</th>
+            <th>New Stock</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.stock }}</td>
+            <td>
+                <label>
+                    <input min="0" name="stock_{{ item.id }}" type="number" value="{{ item.stock }}">
+                </label>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button type="submit">Update Stock</button>
+</form>
+<a href="{{ url_for('shop') }}">Back to Store</a>
+</body>
+</html>

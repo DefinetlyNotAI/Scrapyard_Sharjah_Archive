@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>429 Too Many Requests</title>
+    <link href="{{ url_for('static', filename='css/error.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_buttongroup-a.css') }}" rel="stylesheet">
+    <script defer src="{{ url_for('static', filename='js/error.js') }}"></script>
+</head>
+<body>
+<div class="container">
+    <h1>429 - Rate Limit Exceeded</h1>
+    <div class="terminal">
+        <div class="terminal-header">$ RATE LIMITER</div>
+        {% if error_message %}
+        <p><strong>Warning Message:</strong> {{ error_message }}</p>
+        {% endif %}
+        <p><strong>Basic Analysis:</strong> You have reached the Rate Limit for the API/endpoint, Cool down period
+            initiated</p>
+        <p><strong>Suggestion:</strong> Wait until limit is reset (hourly)</p>
+    </div>
+    <div class="button-group other">
+        <a href="/static">Return to Command Center</a>
+    </div>
+</div>
+</body>
+</html>

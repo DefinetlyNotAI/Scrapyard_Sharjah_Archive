@@ -1,0 +1,42 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <title>Model Answers - 2</title>
+    <link href="{{ url_for('static', filename='css/model.answer.css') }}" rel="stylesheet">
+</head>
+<h2 id="step-by-step-guide-for-challenge-2-web-exploitation">Step-by-Step Guide for Challenge 2: Web Exploitation</h2>
+<hr>
+<h3 id="step-1-understand-the-login-page">Step 1: Understand the Login Page</h3>
+<p>You&#39;ll see a form with two fields:</p>
+<ul>
+    <li><strong>Username</strong></li>
+    <li><strong>Password</strong></li>
+</ul>
+<hr>
+<h3 id="step-2-identify-the-vulnerability">Step 2: Identify the Vulnerability</h3>
+<p>The password field allows SQL Injection due to improper query sanitization. Use the payload <code>&#39; OR &#39;1&#39;=&#39;1</code> in the
+    password field to exploit this.</p>
+<hr>
+<h3 id="step-3-exploit-the-vulnerability">Step 3: Exploit the Vulnerability</h3>
+<p>Fill the form as follows:</p>
+<ul>
+    <li><strong>Username:</strong> <code>&#39; OR &#39;1&#39;=&#39;1</code></li>
+    <li><strong>Password:</strong> <code>&#39; OR &#39;1&#39;=&#39;1</code></li>
+</ul>
+<hr>
+<h3 id="step-4-submit-the-form">Step 4: Submit the Form</h3>
+<p>Click the <strong>Login</strong> button to send the request.</p>
+<hr>
+<h3 id="step-5-retrieve-the-flag">Step 5: Retrieve the Flag</h3>
+<p>If the injection is successful, you will bypass the login and see a success message with the flag:</p>
+<pre><code>Congratulations<span class="hljs-comment">! You've solved the challenge. Here is your flag: CTF{THIS_IS_THE_FLAG}</span>
+</code></pre><hr>
+<h3 id="step-6-verification">Step 6: Verification</h3>
+<p>If you see an error like &quot;Invalid credentials,&quot; double-check the payload and try again.</p>
+<hr>
+
+</html>

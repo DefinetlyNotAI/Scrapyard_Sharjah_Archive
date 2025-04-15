@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <title>Shop</title>
+    <link href="{{ url_for('static', filename='favicon.png') }}" rel="icon" type="image/png">
+    <link href="{{ url_for('static', filename='css/store.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_homebutton.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_body.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/missions+store.css') }}" rel="stylesheet">
+</head>
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-container">
+    {% for category, message in messages %}
+    <div class="flash-message {{ category }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<!-- Added Orpheus Flag and Doodles -->
+<div class="images">
+    <img alt="Orpheus Flag"
+         class="orpheus-flag" src="https://github.com/hackclub/scrapyard/blob/main/public/elements/orpheus-flag.svg?raw=true">
+    <img alt="Orpheus Doodle"
+         class="orpheus-doodle" src="https://github.com/hackclub/scrapyard/blob/main/public/elements/orpheus-doodle.svg?raw=true">
+    <img alt="Trash Can" class="trash-can"
+         src="https://github.com/hackclub/scrapyard/blob/main/public/elements/trash-can.png?raw=true">
+</div>
+
+<h1>Welcome to the Store</h1>
+<div class="items">
+    {% for item in items %}
+    <div class="item">
+        <img alt="{{ item.name }}" src="{{ item.image }}">
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.description }}</p>
+        <p>Price: {{ item.price }} scraps</p>
+        <p>Stock left: {{ item.stock }}</p>
+        <form action="{{ url_for('buy') }}" method="POST">
+            <input name="item_id" type="hidden" value="{{ item.id }}">
+            <label>
+                <input name="email" placeholder="Enter your email" required type="email">
+            </label>
+            <button type="submit">Buy</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+<button class="back-button" onclick="window.location.href='/'">Back to Home</button>
+</body>
+</html>

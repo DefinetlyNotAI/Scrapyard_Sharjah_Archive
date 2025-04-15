@@ -1,0 +1,19 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Participants [READ ONLY]</title>
+    <link href="{{ url_for('static', filename='favicon.png') }}" rel="icon" type="image/x-icon">
+    <link href="{{ url_for('static', filename='css/airtable.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_homebutton.css') }}" rel="stylesheet">
+</head>
+<div class="airtable-container">
+    <iframe class="airtable-embed"
+            src="{{ airtable_url }}">
+    </iframe>
+</div>
+
+<button class="home-button" onclick="window.location.href='/admin'">Back to Admin Panel</button>
+</html>

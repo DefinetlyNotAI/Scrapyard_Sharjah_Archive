@@ -1,0 +1,326 @@
+:root {
+    --primary: #ff4757;
+    --secondary: #2f3542;
+    --background: #1e272e;
+    --text: #ffffff;
+    --fire: #ff6b6b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--background);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    padding: 1rem;
+    position: relative;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.server {
+    width: 180px;
+    height: 220px;
+    background: var(--secondary);
+    margin: 0 auto 1.5rem;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(255, 71, 87, 0.3);
+    animation: server-shake 0.5s ease-in-out infinite;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+    border: 2px solid #3a4149;
+}
+
+.server::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+            transparent 0%,
+            transparent 45%,
+            #3a4149 45%,
+            #3a4149 46%,
+            transparent 46%,
+            transparent 100%
+    );
+    opacity: 0.3;
+}
+
+.server-lights {
+    display: flex;
+    gap: 10px;
+    z-index: 1;
+}
+
+.light {
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: blink 1s infinite;
+}
+
+.fire-container {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.fire {
+    position: absolute;
+    bottom: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--fire);
+    border-radius: 50% 0 50% 50%;
+    transform-origin: 50% 100%;
+    animation: fire 0.5s infinite;
+}
+
+.fire:nth-child(2) {
+    left: 45%;
+    animation-delay: 0.1s;
+    opacity: 0.8;
+}
+
+.fire:nth-child(3) {
+    left: 55%;
+    animation-delay: 0.2s;
+    opacity: 0.6;
+}
+
+.error-details {
+    background: rgba(47, 53, 66, 0.6);
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #ff6b6b;
+}
+
+h1 {
+    font-size: 5rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(255, 71, 87, 0.5);
+}
+
+.glitch {
+    position: relative;
+    display: inline-block;
+    color: var(--primary);
+    font-size: 5rem;
+    text-shadow: 0 0 20px rgba(255, 71, 87, 0.5);
+    animation: glitch-animation 1.5s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text); /* Use data-text attribute for duplicating text */
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--primary);
+    background: transparent;
+    overflow: hidden;
+    clip: rect(0, 900px, 0, 0); /* Clip the text for distortion */
+}
+
+.glitch::before {
+    text-shadow: -2px 0 var(--fire);
+    animation: glitch-before 1.5s infinite;
+}
+
+.glitch::after {
+    text-shadow: 2px 0 #1e90ff; /* Add a blue secondary glitch for effect */
+    animation: glitch-after 1.5s infinite;
+}
+
+.error-text {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+
+.description {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.retry-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background: var(--primary);
+    border: none;
+    color: var(--text);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.retry-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+}
+
+.error-code {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    font-family: monospace;
+    opacity: 0.1;
+    font-size: 6rem;
+    color: var(--primary);
+    transform: rotate(-45deg);
+}
+
+@keyframes server-shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-3px) rotate(-1deg);
+    }
+    75% {
+        transform: translateX(3px) rotate(1deg);
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes fire {
+    0%, 100% {
+        transform: scale(1) rotate(-45deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(-30deg);
+    }
+}
+
+@keyframes glitch-animation {
+    0% {
+        transform: none;
+    }
+    20% {
+        transform: translate(1px, -1px);
+    }
+    40% {
+        transform: translate(-1px, 1px);
+    }
+    60% {
+        transform: translate(-1px, -1px);
+    }
+    80% {
+        transform: translate(1px, 1px);
+    }
+    100% {
+        transform: none;
+    }
+}
+
+@keyframes glitch-before {
+    0% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0, 0);
+    }
+    20% {
+        clip: rect(20px, 900px, 60px, 0);
+        transform: translate(-2px, -2px);
+    }
+    40% {
+        clip: rect(40px, 900px, 80px, 0);
+        transform: translate(2px, 2px);
+    }
+    60% {
+        clip: rect(10px, 900px, 50px, 0);
+        transform: translate(1px, -1px);
+    }
+    80% {
+        clip: rect(30px, 900px, 70px, 0);
+        transform: translate(-1px, 1px);
+    }
+    100% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes glitch-after {
+    0% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0, 0);
+    }
+    20% {
+        clip: rect(15px, 900px, 55px, 0);
+        transform: translate(2px, 2px);
+    }
+    40% {
+        clip: rect(35px, 900px, 75px, 0);
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        clip: rect(5px, 900px, 45px, 0);
+        transform: translate(-1px, 1px);
+    }
+    80% {
+        clip: rect(25px, 900px, 65px, 0);
+        transform: translate(1px, -1px);
+    }
+    100% {
+        clip: rect(0, 900px, 0, 0);
+        transform: translate(0, 0);
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 4rem;
+    }
+
+    .server {
+        width: 140px;
+        height: 180px;
+    }
+
+    .error-code {
+        font-size: 4rem;
+    }
+}

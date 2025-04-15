@@ -1,0 +1,49 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <title>Model Answers - 1</title>
+    <link href="{{ url_for('static', filename='css/model.answer.css') }}" rel="stylesheet">
+</head>
+<h2 id="step-by-step-guide-for-challenge-3-cryptography-rot13-decryption-">Step-by-Step Guide for Challenge 3: Cryptography (ROT13 decryption)</h2>
+<hr>
+<h3 id="step-1-understand-rot13">Step 1: Understand ROT13</h3>
+<p>ROT13 is a simple substitution cipher that shifts each letter in the alphabet by 13 places. It works only for alphabetic
+characters (ignoring non-alphabetic characters). For example:</p>
+<ul>
+<li><code>A ↔ N</code></li>
+<li><code>B ↔ O</code></li>
+<li><code>Z ↔ M</code></li>
+</ul>
+<p>This encryption is symmetric, meaning encrypting or decrypting is the same operation.</p>
+<hr>
+<h3 id="step-2-examine-the-encrypted-message">Step 2: Examine the Encrypted Message</h3>
+<p>The encrypted message provided in the challenge is:<br><code>GUVF_VF_GUR_SYNT</code></p>
+<hr>
+<h3 id="step-3-use-a-rot13-decoder">Step 3: Use a ROT13 Decoder</h3>
+<p>You can use Python&#39;s <code>codecs</code> module or a quick online decoder. Here&#39;s how to decode it manually:</p>
+<h4 id="option-1-write-a-python-script">Option 1: Write a Python Script</h4>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> codecs
+
+<span class="hljs-comment"># Encrypted message</span>
+encrypted_message = <span class="hljs-string">"GUVF_VF_GUR_SYNT"</span>
+
+<span class="hljs-comment"># Decrypt using ROT13</span>
+decrypted_message = codecs.decode(encrypted_message, <span class="hljs-string">'rot_13'</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">"Decrypted Message:"</span>, decrypted_message)
+</code></pre>
+<h4 id="option-2-decode-online">Option 2: Decode Online</h4>
+<p>Many online tools are available. Simply search for &quot;ROT13 decoder&quot; and paste the encrypted text into the tool.</p>
+<hr>
+<h3 id="step-4-obtain-the-decrypted-message">Step 4: Obtain the Decrypted Message</h3>
+<p>Running the script or using a decoder, you&#39;ll get:
+<code>THIS_IS_THE_FLAG</code></p>
+<hr>
+<h3 id="step-5-submit-the-decrypted-message">Step 5: Submit the Decrypted Message</h3>
+<p>Return to the challenge&#39;s web interface, enter <code>THIS_IS_THE_FLAG</code> into the input field for the decrypted message, and
+submit. If correct, the server will return the flag.</p>
+<hr>
+</html>

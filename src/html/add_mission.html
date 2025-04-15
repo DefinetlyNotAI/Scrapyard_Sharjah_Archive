@@ -1,0 +1,30 @@
+<!-- add_mission.html -->
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Add New Mission</title>
+    <link href="{{ url_for('static', filename='favicon.png') }}" rel="icon" type="image/png">
+    <link href="{{ url_for('static', filename='css/add_mission.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_body.css') }}" rel="stylesheet">
+</head>
+<body>
+<h1>Add New Mission</h1>
+<div class="form-container">
+    <form method="POST">
+        <label for="name">Mission Name</label>
+        <input id="name" name="name" required type="text">
+
+        <label for="description">Description</label>
+        <input id="description" name="description" required type="text">
+
+        <label for="scraps">Reward (in scraps)</label>
+        <input id="scraps" name="scraps" required type="number">
+
+        <button type="submit">Add Mission</button>
+    </form>
+</div>
+</body>
+</html>

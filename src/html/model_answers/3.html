@@ -1,0 +1,100 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <title>Model Answers - 3</title>
+    <link href="{{ url_for('static', filename='css/model.answer.css') }}" rel="stylesheet">
+</head>
+<h3 id="model-answer-guide-for-challenge-3-reverse-engineering">Model Answer Guide for Challenge 3: Reverse Engineering</h3>
+<h4 id="challenge-description">Challenge Description</h4>
+<p>In this challenge, participants are required to locate the binary file containing the hidden flag.
+    Which is one of 100 binary files to find a hidden flag. The flag format is <code>KEY{xxxx}</code>.</p>
+<h4 id="steps-to-solve-the-challenge">Steps to Solve the Challenge</h4>
+<ol>
+    <li><p><strong>Download the Binary Files:</strong></p>
+        <ul>
+            <li>The binary files are provided for this challenge. Download all 100 files from the challenge page.</li>
+        </ul>
+    </li>
+    <li><p><strong>Automate the Analysis:</strong></p>
+        <ul>
+            <li>Create a script to automate the analysis of each binary file to find the correct one containing the flag.</li>
+        </ul>
+    </li>
+    <li><p><strong>Analyze Each Binary File:</strong></p>
+        <ul>
+            <li>Load each binary file into notepad and start examining the code.<ul>
+                <li>Use a custom script you can develop to automate the analysis of each binary file.</li>
+            </ul>
+            </li>
+        </ul>
+    </li>
+    <li><p><strong>Extract the Flag:</strong></p>
+        <ul>
+            <li>The flag is hardcoded in the binary. Look for string literals or constants that match the flag format <code>KEY{xxxx}</code>.</li>
+        </ul>
+    </li>
+    <li><p><strong>Verify the Flag:</strong></p>
+        <ul>
+            <li>After extracting the flag, verify it by submitting the file, and KEY line number to challenge page.</li>
+            <li>Ensure that the flag matches the required format and is correctly extracted from the binary.</li>
+        </ul>
+    </li>
+</ol>
+<h4 id="example-solution">Example Solution</h4>
+<ol>
+    <li><strong>Create a Script to Automate the Analysis:</strong><ul>
+        <li>Write a Python script to automate the analysis of each binary file.</li>
+    </ul>
+    </li>
+</ol>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> subprocess
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">analyze_binary</span><span class="hljs-params">(file_path)</span>:</span>
+    <span class="hljs-comment"># Use strings command to extract strings from the binary</span>
+    result = subprocess.run([<span class="hljs-string">'strings'</span>, file_path], capture_output=<span class="hljs-keyword">True</span>, text=<span class="hljs-keyword">True</span>)
+    strings_output = result.stdout
+
+    <span class="hljs-comment"># Check for the flag format in the strings output</span>
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> strings_output.split(<span class="hljs-string">'\n'</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-string">'KEY{'</span> <span class="hljs-keyword">in</span> line:
+            <span class="hljs-keyword">return</span> line.strip()
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">None</span>
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>:</span>
+    binary_dir = <span class="hljs-string">'path/to/binary/files'</span>
+    <span class="hljs-keyword">for</span> file_name <span class="hljs-keyword">in</span> os.listdir(binary_dir):
+        file_path = os.path.join(binary_dir, file_name)
+        flag = analyze_binary(file_path)
+        <span class="hljs-keyword">if</span> flag:
+            print(f<span class="hljs-string">'Flag found in {file_name}: {flag}'</span>)
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">'Flag not found in any binary file.'</span>)
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    main()
+</code></pre>
+<ol>
+    <li><p><strong>Run the Script:</strong></p>
+        <ul>
+            <li>Execute the script to analyze each binary file and find the one containing the flag.</li>
+        </ul>
+    </li>
+    <li><p><strong>Extract the Flag:</strong></p>
+        <ul>
+            <li>Get the line where the flag is, use <code>Ctrl+F</code> to find the flag of format <code>KEY{xxxx}</code>.</li>
+        </ul>
+    </li>
+</ol>
+<p>By following these steps,
+    participants can successfully locate the correct binary file
+    and extract the hidden flag for Challenge 3.</p>
+</html>

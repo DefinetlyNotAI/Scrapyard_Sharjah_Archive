@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Scrapyard Bounty</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/effects.js') }}"></script>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="/admin/bank" class="navbar-brand">
+            <i class="fas fa-database"></i>
+            <span>Scrapyard Bounty</span>
+        </a>
+
+        <div class="navbar-menu">
+            <a href="/admin/bank" class="nav-link active">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/bank/users" class="nav-link">
+                <i class="fas fa-users"></i> Users
+            </a>
+            <a href="/bank/logs" class="nav-link">
+                <i class="fas fa-history"></i> Logs
+            </a>
+            <a href="/bank/logout" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <!-- UUID Section -->
+    <div id="uuid-section" class="card" style="display:none;">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-key"></i> Managing UUID: <span id="currentUUID" class="text-primary"></span>
+            </h2>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card d-flex align-items-center justify-content-between">
+                <div>
+                    <div class="stat-title">View User Details</div>
+                    <div class="stat-value">User Profile</div>
+                </div>
+                <button class="btn btn-primary" onclick="location.href='/admin/bank/users?uuid=' + getUUID()">
+                    <i class="fas fa-user"></i> View
+                </button>
+            </div>
+
+            <div class="stat-card d-flex align-items-center justify-content-between">
+                <div>
+                    <div class="stat-title">Transaction History</div>
+                    <div class="stat-value">User Logs</div>
+                </div>
+                <button class="btn btn-primary" onclick="location.href='/admin/bank/logs?uuid=' + getUUID()">
+                    <i class="fas fa-history"></i> View
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Stats -->
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="stat-title">Total Users</div>
+                    <div class="stat-value" id="total-users">--</div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="stat-title">Total Transactions</div>
+                    <div class="stat-value" id="total-transactions">--</div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="stat-title">Total Scraps</div>
+                    <div class="stat-value" id="total-scraps">--</div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New User Section -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-user-plus"></i> Add New User
+            </h2>
+        </div>
+
+        <div class="form-row">
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="newName" class="form-label">User Name</label>
+                    <input type="text" id="newName" class="form-control" placeholder="Enter user name">
+                </div>
+            </div>
+
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="newScraps" class="form-label">Initial Scraps</label>
+                    <input type="number" id="newScraps" class="form-control" placeholder="0" min="0">
+                </div>
+            </div>
+
+            <div class="form-col">
+                <div class="form-group mt-4">
+                    <button onclick="addUser()" class="btn btn-success">
+                        <i class="fas fa-plus-circle"></i> Add User
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Make Purchase Section -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-shopping-cart"></i> Make Purchase
+            </h2>
+        </div>
+
+        <div class="form-row">
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="purchaseUUID" class="form-label">User UUID</label>
+                    <input type="text" id="purchaseUUID" class="form-control" placeholder="Enter UUID">
+                </div>
+            </div>
+
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="purchaseScraps" class="form-label">Scraps to Deduct</label>
+                    <input type="number" id="purchaseScraps" class="form-control" placeholder="0" min="0">
+                </div>
+            </div>
+
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="purchaseReason" class="form-label">Reason</label>
+                    <input type="text" id="purchaseReason" class="form-control"
+                           placeholder="Enter reason, Include Receipt ID!">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button onclick="makePurchase()" class="btn btn-primary">
+                <i class="fas fa-money-bill-wave"></i> Process Purchase
+            </button>
+        </div>
+    </div>
+
+    <!-- Reimbursement Section -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-hand-holding-usd"></i> Reimbursement
+            </h2>
+        </div>
+
+        <div class="form-row">
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="reimburseUUID" class="form-label">User UUID</label>
+                    <input type="text" id="reimburseUUID" class="form-control" placeholder="Enter UUID">
+                </div>
+            </div>
+
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="reimburseScraps" class="form-label">Scraps to Add</label>
+                    <input type="number" id="reimburseScraps" class="form-control" placeholder="0" min="0">
+                </div>
+            </div>
+
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="reimburseReason" class="form-label">Reason</label>
+                    <input type="text" id="reimburseReason" class="form-control" placeholder="Enter reason">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button onclick="makeReimbursement()" class="btn btn-success">
+                <i class="fas fa-plus-circle"></i> Process Reimbursement
+            </button>
+        </div>
+    </div>
+
+    <!-- Batch Operations -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-layer-group"></i> Batch Operations
+            </h2>
+        </div>
+
+        <div class="p-3">
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="batch-operation" class="form-label">Operation</label>
+                        <select id="batch-operation" class="form-control">
+                            <option value="add_scraps">Add Scraps to Users</option>
+                            <option value="remove_scraps">Remove Scraps from Users</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="batch-filter" class="form-label">Filter by Name (Optional)</label>
+                        <input type="text" id="batch-filter" class="form-control"
+                               placeholder="Leave empty for all users">
+                    </div>
+                </div>
+
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="batch-amount" class="form-label">Amount</label>
+                        <input type="number" id="batch-amount" class="form-control" placeholder="0" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="batch-reason" class="form-label">Reason</label>
+                <input type="text" id="batch-reason" class="form-control"
+                       placeholder="Enter reason for batch operation">
+            </div>
+
+            <div class="form-group">
+                <button onclick="executeBatchOperation()" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Execute Batch Operation
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Export Section -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-file-export"></i> Data Export
+            </h2>
+        </div>
+
+        <div class="p-3">
+            <div class="d-flex gap-3">
+                <a href="/api/bank/export-users" class="btn btn-primary">
+                    <i class="fas fa-users"></i> Export Users
+                </a>
+                <a href="/api/bank/export-transactions" class="btn btn-primary">
+                    <i class="fas fa-history"></i> Export Transactions
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Transaction Analytics -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-chart-line"></i> Transaction Analytics
+            </h2>
+        </div>
+
+        <div class="p-3">
+
+            <div class="form-row mb-3">
+                <div class="form-col">
+                    <label for="chart-period" class="form-label">Time Period</label>
+                    <select id="chart-period" class="form-control" onchange="loadTransactionChart()">
+                        <option value="1">Last 1 Hours</option>
+                        <option value="4">Last 4 Hours</option>
+                        <option value="6">Last 6 Hours</option>
+                        <option value="12" selected>Last 12 Hours</option>
+                        <option value="24">Last 24 Hours</option>
+                        <option value="48">Last 48 Hours</option>
+                    </select>
+                </div>
+                <div class="form-col">
+                    <label for="chart-type" class="form-label">Transaction Type</label>
+                    <select id="chart-type" class="form-control" onchange="loadTransactionChart()">
+                        <option value="all" selected>All Transactions</option>
+                        <option value="Purchase">Purchases Only</option>
+                        <option value="Reimbursement">Reimbursements Only</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="chart-container" style="position: relative; height:300px;">
+                <canvas id="transactions-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Add this new card after the Transaction Analytics card -->
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-shield-alt"></i> Fraud Detection
+        </h2>
+    </div>
+
+    <div class="p-3">
+        <div class="form-row mb-3">
+            <div class="form-col">
+                <label for="fraud-time-range" class="form-label">Time Range</label>
+                <select id="fraud-time-range" class="form-control" onchange="loadFraudDetection()">
+                    <option value="1">Last 1 Hours</option>
+                    <option value="4">Last 4 Hours</option>
+                    <option value="6">Last 6 Hours</option>
+                    <option value="12" selected>Last 12 Hours</option>
+                    <option value="24">Last 24 Hours</option>
+                    <option value="48">Last 48 Hours</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="fraud-loading" class="text-center p-4">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p class="mt-2">Analyzing transaction patterns...</p>
+        </div>
+
+        <div id="fraud-content" style="display: none;">
+            <div class="mb-4">
+                <h3 class="mb-3">High Risk Users</h3>
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Risk Score</th>
+                            <th>Risk Level</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="risk-scores-table">
+                        <!-- Risk scores will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tabs mb-4">
+                <button class="tab-button active" onclick="showFraudTab(event, this)" data-tab="frequent-users">
+                    <i class="fas fa-bolt"></i> Frequent Transactions
+                </button>
+                <button class="tab-button" onclick="showFraudTab(event, this)" data-tab="duplicate-reasons">
+                    <i class="fas fa-copy"></i> Duplicate Reasons
+                </button>
+                <button class="tab-button" onclick="showFraudTab(event, this)" data-tab="unusual-patterns">
+                    <i class="fas fa-random"></i> Unusual Patterns
+                </button>
+
+                <button class="tab-button" onclick="showFraudTab(event, this)" data-tab="large-changes">
+                    <i class="fas fa-exchange-alt"></i> Large Changes
+                </button>
+            </div>
+
+            <div id="frequent-users-tab" class="fraud-tab-content">
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Transaction Count</th>
+                            <th>Risk Level</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="frequent-users-table">
+                        <!-- Frequent users will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="duplicate-reasons-tab" class="fraud-tab-content" style="display: none;">
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Reason</th>
+                            <th>Count</th>
+                            <th>Risk Level</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="duplicate-reasons-table">
+                        <!-- Duplicate reasons will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="unusual-patterns-tab" class="fraud-tab-content" style="display: none;">
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Pattern</th>
+                            <th>Count</th>
+                            <th>Risk Level</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="unusual-patterns-table">
+                        <!-- Unusual patterns will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div id="large-changes-tab" class="fraud-tab-content" style="display: none;">
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Large Changes</th>
+                            <th>Risk Level</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="large-changes-table">
+                        <!-- Large changes will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global chart variable
+    let transactionChart = null;
+
+    // Function to get UUID from URL query parameters
+    function getUUID() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('uuid');
+    }
+
+    // Load dashboard stats
+    function loadDashboardStats() {
+        fetch('/api/bank/dashboard-stats')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('total-users').textContent = data.totalUsers;
+                    document.getElementById('total-transactions').textContent = data.totalTransactions;
+                    document.getElementById('total-scraps').textContent = data.totalScraps.toLocaleString();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading dashboard stats:', error);
+                // Show a subtle error message in the stats
+                document.getElementById('total-users').textContent = 'Error';
+                document.getElementById('total-transactions').textContent = 'Error';
+                document.getElementById('total-scraps').textContent = 'Error';
+            });
+    }
+
+    // Load transaction analytics chart
+    function loadTransactionChart() {
+        const hours = document.getElementById('chart-period').value;
+        const type = document.getElementById('chart-type').value;
+
+        fetch(`/api/bank/transaction-analytics?hours=${hours}&type=${type}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    renderTransactionChart(data.data);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading transaction analytics:', error);
+                // Show error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load transaction analytics',
+                    confirmButtonColor: '#6366f1'
+                });
+            });
+    }
+
+    // Update the renderTransactionChart function to format hour labels
+    function renderTransactionChart(data) {
+        const ctx = document.getElementById('transactions-chart').getContext('2d');
+
+        // Format the hour labels to be more readable
+        const formattedLabels = data.labels.map(hourStr => {
+            const date = new Date(hourStr);
+            return date.toLocaleString([], {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                hour12: true
+            });
+        });
+
+        // Destroy existing chart if it exists
+        if (transactionChart) {
+            transactionChart.destroy();
+        }
+
+        // Create new chart
+        transactionChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: formattedLabels,
+                datasets: [
+                    {
+                        label: 'Purchases',
+                        data: data.purchases,
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    },
+                    {
+                        label: 'Reimbursements',
+                        data: data.reimbursements,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#f8fafc'
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            title: function (tooltipItems) {
+                                return tooltipItems[0].label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#cbd5e1',
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            color: 'rgba(203, 213, 225, 0.1)'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#cbd5e1',
+                            precision: 0
+                        },
+                        grid: {
+                            color: 'rgba(203, 213, 225, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Execute batch operation
+    function executeBatchOperation() {
+        const operation = document.getElementById('batch-operation').value;
+        const filter = document.getElementById('batch-filter').value;
+        const amount = document.getElementById('batch-amount').value;
+        const reason = document.getElementById('batch-reason').value;
+
+        if (!amount || amount <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please enter a valid amount',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+
+        if (!reason) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please enter a reason for this operation',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+
+        // Confirm before executing
+        Swal.fire({
+            icon: 'warning',
+            title: 'Confirm Batch Operation',
+            html: `
+                <p>You are about to ${operation === 'add_scraps' ? 'add' : 'remove'} <strong>${amount} scraps</strong>
+                ${filter ? `from users with names containing "<strong>${filter}</strong>"` : 'from all users'}</p>
+                <p>Reason: ${reason}</p>
+                <p>This action cannot be undone. Are you sure?</p>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Execute',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#6366f1'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Execute the batch operation
+                fetch('/api/bank/batch-operation', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        operation_type: operation,
+                        filter: filter,
+                        amount: parseInt(amount),
+                        reason: reason
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: data.message,
+                                confirmButtonColor: '#6366f1'
+                            });
+
+                            // Reload dashboard stats
+                            loadDashboardStats();
+
+                            // Clear form
+                            document.getElementById('batch-filter').value = '';
+                            document.getElementById('batch-amount').value = '';
+                            document.getElementById('batch-reason').value = '';
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                                confirmButtonColor: '#6366f1'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: `There was an issue with the batch operation: ${error.message}`,
+                            confirmButtonColor: '#6366f1'
+                        });
+                    });
+            }
+        });
+    }
+
+    // Check if UUID exists and adjust UI accordingly
+    window.onload = function () {
+        const uuid = getUUID();
+        const uuidContainer = document.getElementById("uuid-section");
+
+        // Fill the UUID input fields if UUID is present
+        if (uuid) {
+            uuidContainer.style.display = "block"; // Show UUID-related content
+            document.getElementById("currentUUID").textContent = uuid;
+            document.getElementById("purchaseUUID").value = uuid;  // Auto-fill UUID in the purchase form
+            document.getElementById("reimburseUUID").value = uuid; // Auto-fill UUID in the reimbursement form
+        }
+
+        // Load dashboard stats
+        loadDashboardStats();
+
+        // Load transaction chart
+        loadTransactionChart();
+    }
+
+    function addUser() {
+        let name = document.getElementById("newName").value;
+        let scraps = document.getElementById("newScraps").value;
+
+        if (!name) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please enter a user name',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+
+        fetch('/api/bank/add_user', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name, scraps: scraps || 0})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Display the success message with the UUID
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'User Added Successfully',
+                        html: `<p>User: <strong>${name}</strong></p>
+                       <p>UUID: <code>${data.uuid}</code></p>`,
+                        confirmButtonColor: '#6366f1'
+                    });
+
+                    // Clear the form
+                    document.getElementById("newName").value = "";
+                    document.getElementById("newScraps").value = "";
+
+                    // Reload dashboard stats
+                    loadDashboardStats();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message,
+                        confirmButtonColor: '#6366f1'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: `There was an issue adding the user: ${error.message}`,
+                    confirmButtonColor: '#6366f1'
+                });
+            });
+    }
+
+    function makePurchase() {
+        let uuid = document.getElementById("purchaseUUID").value;
+        let scraps = document.getElementById("purchaseScraps").value;
+        let reason = document.getElementById("purchaseReason").value;
+
+        if (!uuid || !scraps || !reason) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please fill in all fields',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+
+        fetch('/api/bank/purchase', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uuid, scraps, reason})
+        })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    icon: data.message.includes('❌') ? 'error' : 'success',
+                    title: data.message.includes('❌') ? 'Error' : 'Success',
+                    text: data.message,
+                    confirmButtonColor: '#6366f1'
+                });
+
+                if (!data.message.includes('❌')) {
+                    // Clear form on success
+                    document.getElementById("purchaseScraps").value = "";
+                    document.getElementById("purchaseReason").value = "";
+
+                    // Reload dashboard stats
+                    loadDashboardStats();
+
+                    // Reload transaction chart
+                    loadTransactionChart();
+                }
+            });
+    }
+
+    function makeReimbursement() {
+        let uuid = document.getElementById("reimburseUUID").value;
+        let scraps = document.getElementById("reimburseScraps").value;
+        let reason = document.getElementById("reimburseReason").value;
+
+        if (!uuid || !scraps || !reason) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please fill in all fields',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+
+        fetch('/api/bank/reimbursement', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({uuid, scraps, reason})
+        })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    icon: data.message.includes('❌') ? 'error' : 'success',
+                    title: data.message.includes('❌') ? 'Error' : 'Success',
+                    text: data.message,
+                    confirmButtonColor: '#6366f1'
+                });
+
+                if (!data.message.includes('❌')) {
+                    // Clear form on success
+                    document.getElementById("reimburseScraps").value = "";
+                    document.getElementById("reimburseReason").value = "";
+
+                    // Reload dashboard stats
+                    loadDashboardStats();
+
+                    // Reload transaction chart
+                    loadTransactionChart();
+                }
+            });
+    }
+
+    // Fraud Detection Functions
+    function loadFraudDetection() {
+        const days = document.getElementById('fraud-time-range').value;
+
+        // Show loading indicator
+        document.getElementById('fraud-loading').style.display = 'block';
+        document.getElementById('fraud-content').style.display = 'none';
+
+        fetch(`/api/bank/fraud-detection?days=${days}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Hide loading indicator
+                    document.getElementById('fraud-loading').style.display = 'none';
+                    document.getElementById('fraud-content').style.display = 'block';
+
+                    // Populate risk scores table
+                    populateRiskScoresTable(data.risk_scores);
+
+                    // Populate other tables
+                    populateFrequentUsersTable(data.frequent_users);
+                    populateDuplicateReasonsTable(data.duplicate_reasons);
+                    populateUnusualPatternsTable(data.unusual_patterns);
+
+                    populateLargeChangesTable(data.large_changes);
+                }
+            })
+            .catch(error => {
+                console.error('Error loading fraud detection data:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to load fraud detection data',
+                    confirmButtonColor: '#6366f1'
+                });
+            });
+    }
+
+    function showFraudTab(event, button) {
+        // Get the tab name from the data-tab attribute
+        const tabName = button.getAttribute('data-tab');
+
+        // Hide all tab contents
+        document.querySelectorAll('.fraud-tab-content').forEach(tab => {
+            tab.style.display = 'none';
+        });
+
+        // Remove active class from all tab buttons
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Show selected tab content
+        document.getElementById(`${tabName}-tab`).style.display = 'block';
+
+        // Add active class to clicked button
+        button.classList.add('active');
+    }
+
+    function populateRiskScoresTable(riskScores) {
+        const table = document.getElementById('risk-scores-table');
+        let html = '';
+
+        if (riskScores.length === 0) {
+            html = '<tr><td colspan="4" class="text-center">No high risk users found</td></tr>';
+        } else {
+            riskScores.forEach(user => {
+                const riskBadgeClass = user.level === 'high' ? 'badge-danger' :
+                    user.level === 'medium' ? 'badge-warning' : 'badge-success';
+
+                html += `
+                    <tr>
+                        <td>${user.name} (${user.uuid.substring(0, 8)}...)</td>
+                        <td>${user.score}</td>
+                        <td><span class="badge ${riskBadgeClass}">${user.level.toUpperCase()}</span></td>
+                        <td>
+                            <a href="/admin/bank?uuid=${user.uuid}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-user"></i> View User
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        table.innerHTML = html;
+    }
+
+    function populateFrequentUsersTable(users) {
+        const table = document.getElementById('frequent-users-table');
+        let html = '';
+
+        if (users.length === 0) {
+            html = '<tr><td colspan="4" class="text-center">No frequent users found</td></tr>';
+        } else {
+            users.forEach(user => {
+                const riskBadgeClass = user.risk_level === 'high' ? 'badge-danger' : 'badge-warning';
+
+                html += `
+                    <tr>
+                        <td>${user.name} (${user.uuid.substring(0, 8)}...)</td>
+                        <td>${user.transaction_count}</td>
+                        <td><span class="badge ${riskBadgeClass}">${user.risk_level.toUpperCase()}</span></td>
+                        <td>
+                            <a href="/admin/bank?uuid=${user.uuid}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-user"></i> View User
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        table.innerHTML = html;
+    }
+
+    function populateDuplicateReasonsTable(reasons) {
+        const table = document.getElementById('duplicate-reasons-table');
+        let html = '';
+
+        if (reasons.length === 0) {
+            html = '<tr><td colspan="5" class="text-center">No duplicate reasons found</td></tr>';
+        } else {
+            reasons.forEach(item => {
+                const riskBadgeClass = item.risk_level === 'high' ? 'badge-danger' : 'badge-warning';
+
+                html += `
+                    <tr>
+                        <td>${item.name} (${item.uuid.substring(0, 8)}...)</td>
+                        <td>${item.reason}</td>
+                        <td>${item.count}</td>
+                        <td><span class="badge ${riskBadgeClass}">${item.risk_level.toUpperCase()}</span></td>
+                        <td>
+                            <a href="/admin/bank?uuid=${item.uuid}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-user"></i> View User
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        table.innerHTML = html;
+    }
+
+    function populateUnusualPatternsTable(patterns) {
+        const table = document.getElementById('unusual-patterns-table');
+        let html = '';
+
+        if (patterns.length === 0) {
+            html = '<tr><td colspan="5" class="text-center">No unusual patterns found</td></tr>';
+        } else {
+            patterns.forEach(item => {
+                const riskBadgeClass = item.risk_level === 'high' ? 'badge-danger' : 'badge-warning';
+
+                html += `
+                    <tr>
+                        <td>${item.name} (${item.uuid.substring(0, 8)}...)</td>
+                        <td>${item.pattern}</td>
+                        <td>${item.count}</td>
+                        <td><span class="badge ${riskBadgeClass}">${item.risk_level.toUpperCase()}</span></td>
+                        <td>
+                            <a href="/admin/bank?uuid=${item.uuid}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-user"></i> View User
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        table.innerHTML = html;
+    }
+
+
+    function populateLargeChangesTable(changes) {
+        const table = document.getElementById('large-changes-table');
+        let html = '';
+
+        if (changes.length === 0) {
+            html = '<tr><td colspan="4" class="text-center">No large balance changes found</td></tr>';
+        } else {
+            changes.forEach(item => {
+                const riskBadgeClass = item.risk_level === 'high' ? 'badge-danger' : 'badge-warning';
+
+                html += `
+                    <tr>
+                        <td>${item.name} (${item.uuid.substring(0, 8)}...)</td>
+                        <td>${item.count}</td>
+                        <td><span class="badge ${riskBadgeClass}">${item.risk_level.toUpperCase()}</span></td>
+                        <td>
+                            <a href="/admin/bank?uuid=${item.uuid}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-user"></i> View User
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        table.innerHTML = html;
+    }
+
+    // Add fraud detection loading to window.onload
+    const originalOnload = window.onload;
+    window.onload = function () {
+        if (originalOnload) {
+            originalOnload();
+        }
+
+        // Load fraud detection data
+        loadFraudDetection();
+    };
+</script>
+</body>
+</html>
+

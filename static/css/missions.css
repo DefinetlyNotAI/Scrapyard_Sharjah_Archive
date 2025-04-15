@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Galindo&display=swap');
+@import url('https://p.typekit.net/p.css?s=1&k=ohf0gmr&ht=tk&f=28207.28241.49976&a=62569417&app=typekit&e=css');
+
+@font-face {
+    font-family: 'p22-stanyan';
+    src: url('https://use.typekit.net/af/444506/00000000000000007735b3cd/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('woff2'),
+    url('https://use.typekit.net/af/444506/00000000000000007735b3cd/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('woff'),
+    url('https://use.typekit.net/af/444506/00000000000000007735b3cd/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('opentype');
+    font-display: auto;
+    font-style: normal;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'moonblossom';
+    src: url('https://use.typekit.net/af/bf03be/00000000000000007735fbe5/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3') format('woff2'),
+    url('https://use.typekit.net/af/bf03be/00000000000000007735fbe5/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3') format('woff'),
+    url('https://use.typekit.net/af/bf03be/00000000000000007735fbe5/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3') format('opentype');
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+}
+
+
+body {
+    position: relative;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin-bottom: 1rem;
+    color: black;
+    font-family: 'moonblossom', sans-serif;
+    text-align: center;
+}
+
+.missions-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 90%;
+    max-width: 1000px;
+    justify-content: center;
+    align-items: center;
+}
+
+.mission {
+    position: relative;
+    width: 100%;
+    min-height: 250px;
+}
+
+.mission h3, .mission p {
+    margin: 5px 0;
+    color: black;
+}
+
+.mission h3 {
+    font-size: clamp(1.5rem, 3vw, 3rem);
+}
+
+.mission p {
+    font-size: clamp(1rem, 2.5vw, 2rem);
+}
+
+.mission .btn {
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.mission .btn:hover {
+    background-color: darkred;
+}
+
+@media (max-width: 768px) {
+    .missions-list {
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+}

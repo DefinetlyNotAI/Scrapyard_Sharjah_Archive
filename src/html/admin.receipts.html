@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <title>Volunteer Panel</title>
+    <link href="{{ url_for('static', filename='favicon.png') }}" rel="icon" type="image/png">
+    <link href="{{ url_for('static', filename='css/admin.receipts.css') }}" rel="stylesheet">
+</head>
+<body>
+<h1>Volunteer Panel</h1>
+<table>
+    <tr>
+        <th>Receipt ID</th>
+        <th>User Email</th>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    {% for receipt in receipts %}
+    <tr>
+        <td>{{ receipt.id }}</td>
+        <td>{{ receipt.user_email }}</td>
+        <td>{{ receipt.name }}</td>
+        <td>{{ receipt.price }} scraps</td>
+        <td>{{ receipt.status }}</td>
+        <td>
+            <button onclick="markAsPaid('{{ receipt.id }}')" style="display:inline;">Mark as Paid</button>
+            <button onclick="cancelReceipt('{{ receipt.id }}')" style="display:inline;">Cancel</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div style="text-align:center;">
+    <a href="/admin">Back to Admin Panel</a>
+    <a href="{{ url_for('add_item') }}">Add New Item</a>
+    <a href="{{ url_for('modify_stock') }}">Modify Stock</a>
+    <a class="btn" href="{{ url_for('add_mission') }}">Add New Mission</a>
+</div>
+<script src="{{ url_for('static', filename='js/admin.receipts.js') }}"></script>
+</body>
+</html>

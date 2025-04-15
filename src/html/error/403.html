@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>403 Forbidden</title>
+    <link href="{{ url_for('static', filename='css/error.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_buttongroup-a.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>403 - Forbidden</h1>
+    <div class="terminal">
+        <div class="terminal-header">$ PERMISSION DENIED</div>
+        {% if error_message %}
+        <p><strong>Error Message:</strong> {{ error_message }}</p>
+        {% endif %}
+        <p><strong>Basic Analysis:</strong> Your account lacks the necessary privileges for this action.</p>
+        <p><strong>Suggestion:</strong> Contact the administrator to request access.</p>
+    </div>
+    <div class="button-group challenges">
+        <a href="/static">Return to Home</a>
+    </div>
+    <div class="hint">
+        <p>Access is restricted based on your user role.<br>
+            Please ensure your account has the correct permissions.</p>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/error.js') }}"></script>
+</body>
+</html>

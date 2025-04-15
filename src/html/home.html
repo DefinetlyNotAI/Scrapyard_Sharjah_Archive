@@ -1,0 +1,53 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>CTF Challenges</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_buttongroup-a.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to the CTF Challenges!</h1>
+    <p>Select a challenge to start:</p>
+
+    <div class="button-group challenges">
+        <a href="/cryptography">Cryptography Challenge</a>
+        <a href="/weblogin">Web Exploitation Challenge</a>
+        <a href="/binary">Reverse Engineering Challenge</a>
+        <a href="/forensics">Forensics Challenge</a>
+        <a href="/steganography">Steganography Challenge</a>
+    </div>
+
+    <div class="button-group downloads">
+        <a href="/api/download/bin">Download Reverse Engineering Files</a>
+        <a href="/api/download/pcap">Download Forensics Files</a>
+        <a href="/api/download/images">Download Steganography Files</a>
+    </div>
+
+    <div class="button-group other">
+        <a href="/submit">Submit Flag</a>
+        <a href="/leaderboard">Leaderboard</a>
+        <a href="/shop">Shop</a>
+        <a href="/shop/missions">Scraps Mission Board</a>
+        <a href="/bank">Your Scraps Account</a>
+    </div>
+
+    {% if session['team_name'] == 'ADMIN' %}
+    <div class="button-group challenges">
+        <a href="/admin">Admin Panel</a>
+        <a href="/admin/shop">Admin Panel for Shop</a>
+        <a href="/transactions">HCB Transactions</a>
+        <a href="/admin/bank">Admin Panel for Scraps/Banking</a>
+    </div>
+    {% endif %}
+
+    <div id="timer">Loading Timer...</div>
+</div>
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+</body>
+</html>

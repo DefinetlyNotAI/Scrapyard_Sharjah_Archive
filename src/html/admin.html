@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Database Admin Panel</title>
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <link href="{{ url_for('static', filename='css/admin.css') }}" rel="stylesheet">
+    <!-- Include SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Include SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <header class="header">
+        <h1>Database Admin Panel</h1>
+        <div class="connection-status">
+            <span class="status-indicator"></span>
+            <span id="connectionStatus">Connecting...</span>
+            <span id="databaseStatus">Checking database...</span>
+        </div>
+    </header>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Total Records</h3>
+            <div class="value" id="totalRecords">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>Database Size</h3>
+            <div class="value" id="dbSize">-</div>
+        </div>
+        <div class="stat-card">
+            <h3>Active Connections</h3>
+            <div class="value" id="activeConnections">-</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="tabs">
+            <div class="tab active" data-tab="tables">Tables</div>
+            <div class="tab" data-tab="query">Query</div>
+            <div class="tab" data-tab="backup">Backup</div>
+        </div>
+
+        <div class="panel active" id="tables-panel">
+            <div class="search-bar">
+                <label for="tableSelect">Select Table:</label>
+                <select id="tableSelect">
+                    <option value="">Select Table</option>
+                </select>
+                <label for="searchInput">Search:</label>
+                <input id="searchInput" placeholder="Search records..." type="text">
+            </div>
+
+            <div class="table-container">
+                <table id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Actions</th>
+                        <!-- Headers will be populated here -->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <button class="btn btn-primary" onclick="window.location.href='/admin/airtable'">Go to Airtable</button>
+            <button class="btn btn-primary" onclick="window.location.href='/admin/shop'">Go to Shop (Admin)</button>
+            <button class="btn btn-primary" onclick="window.location.href='/admin/bank'">Go to Banking Panel</button>
+        </div>
+
+        <div class="panel" id="query-panel">
+            <div class="form-group">
+                <label for="queryInput">SQL Query</label>
+                <textarea id="queryInput" placeholder="Enter SQL query..."
+                          style="width: 100%; height: 150px; margin-bottom: 1rem; padding: 0.5rem;"></textarea>
+            </div>
+            <button class="btn btn-primary" id="executeQuery">Execute Query</button>
+            <div id="queryResult" style="margin-top: 1rem;"></div>
+        </div>
+
+        <div class="panel" id="backup-panel">
+            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                <button class="btn btn-primary" id="createBackup">Create Backup</button>
+                <button class="btn btn-primary" disabled id="restoreBackup"
+                        style="background: grey; cursor: not-allowed;">Restore from Backup (WIP)
+                </button>
+            </div>
+            <div id="backupsList">
+                <!-- Backups will be listed here -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

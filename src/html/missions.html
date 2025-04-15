@@ -1,0 +1,30 @@
+<!-- missions.html -->
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Missions Bulletin Board</title>
+    <link href="{{ url_for('static', filename='favicon.png') }}" rel="icon" type="image/png">
+    <link href="{{ url_for('static', filename='css/dup_homebutton.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_body.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/missions+store.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/missions.css') }}" rel="stylesheet">
+</head>
+<body>
+<h1>Missions Bulletin Board</h1>
+<div class="missions-list">
+    {% for mission in missions %}
+    <div class="mission">
+        <h3>{{ mission.name }}</h3>
+        <p>{{ mission.description }}</p>
+        <p><strong>Reward:</strong> {{ mission.scraps }} scraps</p>
+        {% if session['team_name'] == 'ADMIN' %}
+        <a class="btn" href="{{ url_for('remove_mission', mission_id=mission['id']) }}">Remove Mission</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+</body>
+</html>

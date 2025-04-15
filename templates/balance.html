@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Balance | Scrapyard Bounty</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="balance-container">
+    <div class="balance-card">
+        <div class="card-header mb-4">
+            <h1 class="card-title">
+                <i class="fas fa-coins text-primary"></i> Scrapyard Bounty
+            </h1>
+        </div>
+
+        <div class="balance-details">
+            <div class="user-profile mb-4">
+                <div class="avatar-container">
+                    <div class="avatar" id="user-avatar">
+                        {{ name[0].upper() }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="balance-label">Hello, {{ name }}!</div>
+                </div>
+            </div>
+
+            <div class="balance-label">Your Scrap Balance</div>
+            <div class="balance-amount" id="balance-amount">
+                <i class="fas fa-coins"></i> <span id="balance-value">{{ scraps }}</span>
+            </div>
+
+            <div class="balance-visual mb-4">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs mb-4">
+            <button class="tab-button active" onclick="showTab('history')">
+                <i class="fas fa-history"></i> Transaction History
+            </button>
+            <button class="tab-button" onclick="showTab('share')">
+                <i class="fas fa-share-alt"></i> See UUID
+            </button>
+        </div>
+
+        <div id="history-tab" class="tab-content">
+            <div class="transaction-history">
+                <h3 class="mb-3">Recent Transactions</h3>
+                <div class="transaction-list" id="transaction-list">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i> Loading transactions...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="share-tab" class="tab-content" style="display: none;">
+            <div class="share-uuid">
+                <h3 class="mb-3">Your UUID</h3>
+                <div class="uuid-display mb-3">{{ uuid }}</div>
+
+                <button class="btn btn-primary mb-3" onclick="copyUUID('{{ uuid }}')">
+                    <i class="fas fa-copy"></i> Copy UUID
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="/static" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Balance Checker
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="notification" class="notification">
+    <i class="fas fa-check-circle"></i> <span id="notification-message"></span>
+</div>
+
+<script>
+    // Initialize balance visual
+    function initBalanceVisual() {
+        const balance = parseInt(document.getElementById('balance-value').textContent);
+        const progressFill = document.getElementById('progress-fill');
+
+        // Calculate percentage (max at 100 scraps for full bar)
+        const percentage = Math.min(balance / 100 * 100, 100);
+        progressFill.style.width = `${percentage}%`;
+
+        // Change color based on balance
+        if (balance > 75) {
+            progressFill.style.backgroundColor = '#10b981'; // Green
+        } else if (balance > 25) {
+            progressFill.style.backgroundColor = '#f59e0b'; // Yellow
+        } else {
+            progressFill.style.backgroundColor = '#ef4444'; // Red
+        }
+    }
+
+    // Show notification
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        const notificationMessage = document.getElementById('notification-message');
+
+        notificationMessage.textContent = message;
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    // Copy UUID to clipboard
+    function copyUUID(uuid) {
+        navigator.clipboard.writeText(uuid).then(() => {
+            showNotification('UUID copied to clipboard!');
+        });
+    }
+
+    // Tab switching
+    function showTab(tabName) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.style.display = 'none';
+        });
+
+        // Remove active class from all tab buttons
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.remove('active');
+        });
+
+        // Show selected tab content
+        document.getElementById(`${tabName}-tab`).style.display = 'block';
+
+        // Add active class to clicked button
+        document.querySelector(`.tab-button[onclick*="${tabName}"]`).classList.add('active');
+    }
+
+    // Load transaction history
+    function loadTransactionHistory() {
+        fetch(`/api/bank/user-transactions?uuid={{ uuid }}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log("Transaction data:", data.transactions);
+                    renderTransactionHistory(data.transactions);
+                } else {
+                    document.getElementById('transaction-list').innerHTML =
+                        '<div class="empty-state">No transactions found</div>';
+                }
+            })
+            .catch(error => {
+                console.error("Error loading transactions:", error);
+                document.getElementById('transaction-list').innerHTML =
+                    `<div class="error-state">Failed to load transactions: ${error}</div>`;
+            });
+    }
+
+    // Render transaction history
+    function renderTransactionHistory(transactions) {
+        const transactionList = document.getElementById('transaction-list');
+
+        if (transactions.length === 0) {
+            transactionList.innerHTML = '<div class="empty-state">No transactions found</div>';
+            return;
+        }
+
+        let html = '';
+        transactions.forEach(transaction => {
+            const isPositive = transaction.type === 'Reimbursement' || transaction.type === 'Batch Add';
+
+            // Log transaction details for debugging
+            console.log(`Transaction: ${transaction.type}, Reason: ${transaction.reason}`);
+
+            html += `
+            <div class="transaction-item">
+                <div class="transaction-icon ${isPositive ? 'positive' : 'negative'}">
+                    <i class="fas ${isPositive ? 'fa-plus' : 'fa-minus'}"></i>
+                </div>
+                <div class="transaction-details">
+                    <div class="transaction-title">${transaction.type}</div>
+                    <div class="transaction-reason">${transaction.reason}</div>
+                    <div class="transaction-date">${new Date(transaction.timestamp).toLocaleString()}</div>
+                </div>
+                <div class="transaction-amount ${isPositive ? 'positive' : 'negative'}">
+                    ${isPositive ? '+' : '-'}
+                </div>
+            </div>
+        `;
+        });
+
+        transactionList.innerHTML = html;
+    }
+
+    // Initialize on page load
+    window.onload = function () {
+        initBalanceVisual();
+        loadTransactionHistory();
+
+        // Add event listeners to tab buttons
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const tabName = this.textContent.trim().includes('Transaction') ? 'history' : 'share';
+                showTab(tabName);
+            });
+        });
+
+        // Add animation to balance amount
+        const balanceAmount = document.getElementById('balance-amount');
+        balanceAmount.classList.add('pulse');
+
+        // Random avatar color based on name
+        const avatar = document.getElementById('user-avatar');
+        const colors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#3b82f6'];
+        const nameHash = '{{ name }}'.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const colorIndex = nameHash % colors.length;
+        avatar.style.backgroundColor = colors[colorIndex];
+    };
+</script>
+</body>
+</html>
+

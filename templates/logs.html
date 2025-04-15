@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Logs | Scrapyard Bounty</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="/admin/bank" class="navbar-brand">
+            <i class="fas fa-database"></i>
+            <span>Scrapyard Bounty</span>
+        </a>
+
+        <div class="navbar-menu">
+            <a href="/admin/bank" class="nav-link">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/bank/users" class="nav-link">
+                <i class="fas fa-users"></i> Users
+            </a>
+            <a href="/bank/logs" class="nav-link active">
+                <i class="fas fa-history"></i> Logs
+            </a>
+            <a href="/bank/logout" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-history"></i> Transaction Logs
+            </h2>
+
+            <div class="search-container">
+                <form method="POST" action="{{ url_for('admin_logs') }}" class="d-flex gap-2">
+                    <label for="searchQuery"></label><input type="text" id="searchQuery" name="search"
+                                                            class="form-control" placeholder="Search by name"
+                                                            value="{{ search_query }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>UUID</th>
+                    <th>Name</th>
+                    <th>Reason</th>
+                    <th>Timestamp</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="uuid-text">{{ log[0] }}</span>
+                                <button onclick="copyToClipboard('{{ log[0] }}')"
+                                        class="btn btn-sm btn-secondary btn-icon">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>{{ log[1] }}</td>
+                        <td>{{ log[2] }}</td>
+                        <td>{{ log[3] }}</td>
+                        <td>
+                            <a href="/admin/bank?uuid={{ log[0] }}" class="btn btn-sm btn-primary">
+                                <i class="fas fa-user"></i> View User
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                {% if not logs %}
+                    <tr>
+                        <td colspan="5" class="text-center">No logs found</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            // Create a temporary element for the "Copied!" message
+            const message = document.createElement('div');
+            message.textContent = 'Copied!';
+            message.style.position = 'fixed';
+            message.style.top = '20px';
+            message.style.left = '50%';
+            message.style.transform = 'translateX(-50%)';
+            message.style.padding = '10px 20px';
+            message.style.backgroundColor = '#4f46e5';
+            message.style.color = 'white';
+            message.style.borderRadius = '4px';
+            message.style.zIndex = '1000';
+
+            document.body.appendChild(message);
+
+            // Remove the message after 2 seconds
+            setTimeout(() => {
+                document.body.removeChild(message);
+            }, 2000);
+        });
+    }
+</script>
+</body>
+</html>
+

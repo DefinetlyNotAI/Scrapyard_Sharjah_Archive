@@ -1,0 +1,100 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <title>Model Answers - 5</title>
+    <link href="{{ url_for('static', filename='css/model.answer.css') }}" rel="stylesheet">
+</head>
+
+<h3 id="challenge-5-steganography">Challenge 5: Steganography</h3>
+<h4 id="objective-">Objective:</h4>
+<p>Extract hidden data (Format <code>KEY{xxxx}</code>) from an image file using an automated script. First, you must find the correct
+    JPEG file, then the correct line number.</p>
+<h4 id="steps-to-solve-the-challenge-">Steps to Solve the Challenge:</h4>
+<ol>
+    <li><p><strong>Understand the Problem:</strong></p>
+        <ul>
+            <li>You are given 100 JPEG files.</li>
+            <li>One of these files contains a hidden message in the format <code>KEY{xxxx}</code>.</li>
+            <li>You need to find the correct file and extract the hidden message.</li>
+        </ul>
+    </li>
+    <li><p><strong>Requirements:</strong></p>
+        <ul>
+            <li>Python programming language.</li>
+            <li><code>pillow</code> library for image processing.</li>
+            <li><code>stepic</code> or <code>lsb</code> library for steganography (depending on the method used).</li>
+        </ul>
+    </li>
+    <li><p><strong>Setup:</strong></p>
+        <ul>
+            <li>Install the required libraries:<pre><code class="lang-sh">pip <span class="hljs-keyword">install</span> pillow stepic
+</code></pre>
+            </li>
+        </ul>
+    </li>
+    <li><p><strong>Automated Script:</strong></p>
+        <ul>
+            <li>Create a Python script to automate the process of finding the hidden message.</li>
+        </ul>
+    </li>
+    <li><p><strong>Script Explanation:</strong></p>
+        <ul>
+            <li>The script will iterate through all the JPEG files.</li>
+            <li>For each file, it will attempt to extract the hidden message.</li>
+            <li>If the message matches the expected format, it will print the message and the file name.</li>
+        </ul>
+    </li>
+    <li><p><strong>Sample Script:</strong></p>
+    </li>
+</ol>
+<pre><code class="lang-python"><span class="hljs-keyword">import</span> os
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">find_hidden_message</span><span class="hljs-params">(directory)</span>:</span>
+   flag_start = <span class="hljs-string">b"KEY{"</span>
+   flag_end = <span class="hljs-string">b"}"</span>
+
+   <span class="hljs-keyword">for</span> filename <span class="hljs-keyword">in</span> os.listdir(directory):
+      <span class="hljs-keyword">if</span> filename.endswith(<span class="hljs-string">".jpeg"</span>):
+         file_path = os.path.join(directory, filename)
+         <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">with</span> open(file_path, <span class="hljs-string">"rb"</span>) <span class="hljs-keyword">as</span> image_file:
+               image_data = image_file.read()
+               start_index = image_data.find(flag_start)
+               end_index = image_data.find(flag_end, start_index)
+               <span class="hljs-keyword">if</span> start_index != <span class="hljs-number">-1</span> <span class="hljs-keyword">and</span> end_index != <span class="hljs-number">-1</span>:
+                  hidden_message = image_data[start_index:end_index + len(flag_end)].decode()
+                  print(f<span class="hljs-string">"Hidden message found in {filename}: {hidden_message}"</span>)
+                  <span class="hljs-keyword">return</span>
+         <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            print(f<span class="hljs-string">"Error processing {filename}: {e}"</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+   director = <span class="hljs-string">"assets/images"</span>
+   find_hidden_message(director)
+</code></pre>
+<ol>
+    <li><p><strong>Run the Script:</strong></p>
+        <ul>
+            <li>Place the script in the same directory as your JPEG files or adjust the <code>directory</code> variable to point to the
+                correct path.</li>
+            <li>Run the script:<pre><code class="lang-sh"><span class="hljs-keyword">python</span> find_hidden_message.<span class="hljs-keyword">py</span>
+</code></pre>
+            </li>
+        </ul>
+    </li>
+    <li><p><strong>Verify the Result:</strong></p>
+        <ul>
+            <li>The script will output the file name and the hidden message if found.</li>
+            <li>Ensure the hidden message matches the expected format <code>KEY{xxxx}</code>.</li>
+            <li>Then get the line number where the flag is, use <code>Ctrl+F</code> to find the flag of format <code>KEY{xxxx}</code>.</li>
+        </ul>
+    </li>
+</ol>
+<p>By following these steps,
+    you will be able to automate the process of finding the hidden message
+    in the JPEG files and successfully complete Challenge 5.</p>
+</html>

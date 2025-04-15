@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Galindo&display=swap');
+@import url('https://p.typekit.net/p.css?s=1&k=ohf0gmr&ht=tk&f=28207.28241.49976&a=62569417&app=typekit&e=css');
+
+@font-face {
+    font-family: 'p22-stanyan';
+    src: url('https://use.typekit.net/af/444506/00000000000000007735b3cd/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('woff2'),
+    url('https://use.typekit.net/af/444506/00000000000000007735b3cd/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('woff'),
+    url('https://use.typekit.net/af/444506/00000000000000007735b3cd/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3') format('opentype');
+    font-display: auto;
+    font-style: normal;
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'moonblossom';
+    src: url('https://use.typekit.net/af/bf03be/00000000000000007735fbe5/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3') format('woff2'),
+    url('https://use.typekit.net/af/bf03be/00000000000000007735fbe5/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3') format('woff'),
+    url('https://use.typekit.net/af/bf03be/00000000000000007735fbe5/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3') format('opentype');
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+}
+
+body {
+    position: relative;
+}
+
+.images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.orpheus-flag {
+    position: absolute;
+    top: 20px;
+    width: 250px; /* Enlarged size */
+    height: auto;
+}
+
+.orpheus-doodle {
+    position: absolute;
+    bottom: 20px;
+    width: 250px; /* Enlarged size */
+    height: auto;
+}
+
+.trash-can {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 200px; /* Enlarged size */
+    height: auto;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    margin-bottom: 1rem;
+    color: black;
+    font-family: 'moonblossom', sans-serif;
+}
+
+.flash-container {
+    width: 90%;
+    max-width: 600px;
+    margin-bottom: 15px;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+.flash-message {
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    animation: fadeOut 4s forwards;
+}
+
+.flash-message.success {
+    background-color: #4caf50;
+    color: white;
+}
+
+.flash-message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
+.items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 60px; /* Increased gap for better spacing */
+    width: 90%;
+    max-width: 1000px;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .items {
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+}
+
+.item {
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+}
+
+.item img {
+    max-width: 80%;
+    border-radius: 4px;
+}
+
+h2, p {
+    margin: 5px 0;
+    color: black;
+}
+
+h2 {
+    font-size: clamp(1.5rem, 3vw, 3rem);
+}
+
+p {
+    font-size: clamp(1rem, 2.5vw, 2rem);
+}
+
+input {
+    width: 90%;
+    padding: 6px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    transition: border 0.3s;
+}
+
+input:focus {
+    border-color: #aaa;
+    outline: none;
+}
+
+button {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    background-color: transparent;
+    color: #4c8a7c;
+    border: none;
+    padding: 8px;
+    width: 90%;
+    margin-top: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: transparent;
+}

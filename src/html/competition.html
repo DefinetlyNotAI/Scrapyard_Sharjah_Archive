@@ -1,0 +1,71 @@
+<!doctype html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>CTF Challenge</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <link href="{{ url_for('static', filename='css/competition.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/dup_buttongroup-a.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/competition+leaderboard.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1>Challenge {{ challenge }}</h1>
+    {% if description %}
+    <p><strong>Description:</strong> {{ description }}</p>
+    {% endif %}
+    {% if encrypted %}
+    <p><strong>Encrypted Message:</strong> {{ encrypted }}</p>
+    {% endif %}
+    {% if success %}
+    <p class="success"><strong>Congratulations!</strong> You've solved the challenge.</p>
+    <p><strong>Your Token:</strong> {{ flag }}</p>
+    {% elif error %}
+    <p class="error"><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
+    {% if not success %}
+    {% if challenge in [1, 2] %}
+    <form method="post">
+        {% if challenge == 1 %}
+        <div class="form-group">
+            <label for="decrypted">Decrypted Message:</label>
+            <input id="decrypted" name="decrypted" placeholder="Enter the decrypted key" required type="text"
+                   value="{{ request.form.get('decrypted', '') }}">
+        </div>
+        {% elif challenge == 2 %}
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input id="username" name="username" placeholder="Enter Username" required type="text">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input id="password" name="password" placeholder="Enter Password" required type="text">
+        </div>
+        {% endif %}
+        <br><br>
+        <button class="submit-button" type="submit">Submit</button>
+    </form>
+    {% elif challenge in [3, 4, 5] %}
+    <form enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label class="file-input" for="file">Upload File</label>
+            <br><br>
+            <input accept=".bin,.pcap,.jpeg" id="file" name="file" style="display: none;" type="file">
+
+            <label for="line">Line Number:</label>
+            <input id="line" name="line" placeholder="Enter Line of the KEY" required type="number">
+        </div>
+        <br><br>
+        <button class="submit-button" type="submit">Submit</button>
+    </form>
+    {% endif %}
+    {% endif %}
+    <span style="display: inline-block; height: 35px;"></span>
+    <button class="back-button" onclick="window.location.href='/'">Back to Home</button>
+</div>
+<script src="{{ url_for('static', filename='js/competition.js') }}"></script>
+</body>
+</html>
